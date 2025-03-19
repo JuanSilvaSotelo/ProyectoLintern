@@ -8,9 +8,12 @@ const settings = document.getElementById('settings');
 const settingsForm = document.getElementById('settings-form');
 const difficultySelect = document.getElementById('difficulty');
 
+// Declarar timeInterval aquí
+let timeInterval;
+
 // List of words for game
 const words = [
-"Ayuda", "Casa", "Perro", "Gato", "Libro", "Computadora", "Teléfono", "Amigo", "Familia", "Comida", "Agua", "Trabajo", "Escuela", "Estudio", "Música", "Película", "Viaje", "Coche", "Bicicleta", "Ciudad", "Campo", "Naturaleza", "Sol", "Luna", "Estrella", "Tiempo", "Reloj", "Dinero", "Salud", "Ejercicio", "Risa", "Lluvia", "Nieve", "Calor", "Frío", "Amor", "Paz", "Felicidad", "Sueño", "Energía"
+  'Ayuda', 'Casa', 'Perro', 'Gato', 'Libro', 'Computadora', 'Teléfono', 'Amigo', 'Familia', 'Comida', 'Agua', 'Trabajo', 'Escuela', 'Estudio', 'Música', 'Película', 'Viaje', 'Coche', 'Bicicleta', 'Ciudad', 'Campo', 'Naturaleza', 'Sol', 'Luna', 'Estrella', 'Tiempo', 'Reloj', 'Dinero', 'Salud', 'Ejercicio', 'Risa', 'Lluvia', 'Nieve', 'Calor', 'Frío', 'Amor', 'Paz', 'Felicidad', 'Sueño', 'Energía',
 ];
 
 // Init word
@@ -23,22 +26,43 @@ let score = 0;
 let time = 10;
 
 // Set difficulty to value in ls or medium
-let difficulty =
-  localStorage.getItem('difficulty') !== null
-    ? localStorage.getItem('difficulty')
-    : 'medium';
+let difficulty = localStorage.getItem('difficulty') !== null
+  ? localStorage.getItem('difficulty')
+  : 'medium';
 
 // Set difficulty select value
-difficultySelect.value =
-  localStorage.getItem('difficulty') !== null
-    ? localStorage.getItem('difficulty')
-    : 'medium';
+difficultySelect.value = localStorage.getItem('difficulty') !== null
+  ? localStorage.getItem('difficulty')
+  : 'medium';
 
 // Focus on text on start
 text.focus();
 
+// Game over, show end screen
+function gameOver() {
+  endgameEl.innerHTML = `
+    <h1>Time ran out</h1>
+    <p>Your final score is ${score}</p>
+    <button onclick="location.reload()">Reload</button>
+  `;
+
+  endgameEl.style.display = 'flex';
+}
+
+// Update time
+function updateTime() {
+  time -= 1; // Corregido: Reemplazado time-- con time -= 1
+  timeEl.innerHTML = `${time}s`;
+
+  if (time === 0) {
+    clearInterval(timeInterval);
+    // End game
+    gameOver();
+  }
+}
+
 // Start counting down
-const timeInterval = setInterval(updateTime, 1000);
+timeInterval = setInterval(updateTime, 1000);
 
 // Generate random word from array
 function getRandomWord() {
@@ -53,31 +77,8 @@ function addWordToDOM() {
 
 // Update score
 function updateScore() {
-  score++;
+  score += 1; // Corregido: Reemplazado score++ con score += 1
   scoreEl.innerHTML = score;
-}
-
-// Update time
-function updateTime() {
-  time--;
-  timeEl.innerHTML = time + 's';
-
-  if (time === 0) {
-    clearInterval(timeInterval);
-    // end game
-    gameOver();
-  }
-}
-
-// Game over, show end screen
-function gameOver() {
-  endgameEl.innerHTML = `
-    <h1>Time ran out</h1>
-    <p>Your final score is ${score}</p>
-    <button onclick="location.reload()">Reload</button>
-  `;
-
-  endgameEl.style.display = 'flex';
 }
 
 addWordToDOM();
@@ -85,7 +86,7 @@ addWordToDOM();
 // Event listeners
 
 // Typing
-text.addEventListener('input', e => {
+text.addEventListener('input', (e) => {
   const insertedText = e.target.value;
 
   if (insertedText === randomWord) {
@@ -111,7 +112,7 @@ text.addEventListener('input', e => {
 settingsBtn.addEventListener('click', () => settings.classList.toggle('hide'));
 
 // Settings select
-settingsForm.addEventListener('change', e => {
+settingsForm.addEventListener('change', (e) => {
   difficulty = e.target.value;
   localStorage.setItem('difficulty', difficulty);
 });
