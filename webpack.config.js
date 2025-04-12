@@ -38,6 +38,21 @@ module.exports = {
           filename: 'assets/images/[name][ext]',
         },
       },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+        options: {
+          sources: {
+            list: [
+              {
+                tag: 'img',
+                attribute: 'src',
+                type: 'src',
+              },
+            ],
+          },
+        },
+      },
 
     ],
   },
