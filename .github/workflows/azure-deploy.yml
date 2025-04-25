@@ -3,7 +3,7 @@ name: Build and Deploy to Azure VM
 on:
   push:
     branches:
-      - develop  # adjust if you deploy from a different branch
+      - develop  # adjust if you deploy from a different branch v1
 
 jobs:
   build-and-deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # use your desired Node.js version
+          node-version: '22'  # use your desired Node.js version
 
       - name: Install dependencies
         run: npm install
@@ -31,10 +31,9 @@ jobs:
           host: ${{ secrets.VM_IP }}
           username: ${{ secrets.VM_USERNAME }}
           key: ${{ secrets.VM_PRIVATE_KEY }}
-          port: ${{ secrets.VM_PORT }}
-          source: "dist/*"  # Solo transferir archivos construidos
-          target: "/home/${{ secrets.VM_USERNAME }}/form-app"
-          timeout: 120s  # Aumentar timeout a 2 minutos
+          port: ${{ secrets.VM_PORT }}  # optional if using default port 22, can be omitted
+          source: "."
+          target: "/home/${{ secrets.VM_USERNAME }}/form-app"  # adjust target path as needed
 
       # Execute remote commands via SSH to install dependencies and restart the app.
       - name: Execute remote SSH commands
@@ -45,7 +44,7 @@ jobs:
           key: ${{ secrets.VM_PRIVATE_KEY }}
           port: ${{ secrets.VM_PORT }}
           script: |
-            cd ~/myapp
-            npm install --production
+            cd ~/form-app
+            npm install
             # If using PM2, restart the app or start if not running:
-            pm2 restart app || pm2 start server.js --name app
+            pm2 start app || pm2 start server.js --name app --watch
