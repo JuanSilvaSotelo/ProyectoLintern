@@ -13,7 +13,7 @@ module.exports = {
     static: './dist',
     hot: true,
     liveReload: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
