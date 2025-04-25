@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     index: './src/main.js',
     style: './src/assets/styles.css',
@@ -13,6 +13,7 @@ module.exports = {
     static: './dist',
     hot: true,
     liveReload: true,
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -36,6 +37,21 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: 'assets/images/[name][ext]',
+        },
+      },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+        options: {
+          sources: {
+            list: [
+              {
+                tag: 'img',
+                attribute: 'src',
+                type: 'src',
+              },
+            ],
+          },
         },
       },
 
