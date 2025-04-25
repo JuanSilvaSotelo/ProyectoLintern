@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: 'development',
   entry: {
     index: './src/main.js',
     style: './src/assets/styles.css',
@@ -13,7 +13,6 @@ module.exports = {
     static: './dist',
     hot: true,
     liveReload: true,
-    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
