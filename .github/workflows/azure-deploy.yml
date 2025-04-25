@@ -47,4 +47,4 @@ jobs:
             cd ~/form-app
             npm install
             # If using PM2, restart the app or start if not running:
-            pm2 restart app || pm2 start server.js --name app
+            pm2 restart app || pm2 start server.js --name app --watch
