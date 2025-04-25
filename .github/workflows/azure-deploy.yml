@@ -46,5 +46,5 @@ jobs:
           script: |
             cd ~/form-app
             npm install
-            # Reinicia o inicia la aplicación con un nombre único
-            pm2 start server.js --name form-app --watch || pm2 restart form-app
+            # If using PM2, restart the app or start if not running:
+            pm2 start server.js || pm2 start server.js
