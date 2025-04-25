@@ -46,7 +46,5 @@ jobs:
           script: |
             cd ~/form-app
             npm install
-            pm2 delete app || true
-            # Matar cualquier proceso que esté usando el puerto 8080
-            sudo lsof -ti :8080 | xargs -r sudo kill -9
-            pm2 start server.js --name app --watch
+            # If using PM2, restart the app or start if not running:
+            pm2 start app || pm2 start server.js --name app --watch
